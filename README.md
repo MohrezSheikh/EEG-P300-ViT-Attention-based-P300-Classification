@@ -1,1 +1,1 @@
-# EEG-P300-ViT-Attention-based-P300-Classification
+# Vision Transformer Based EEG Classification
