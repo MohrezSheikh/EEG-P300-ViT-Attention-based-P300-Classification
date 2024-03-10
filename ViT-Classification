@@ -1,0 +1,90 @@
+import os
+import numpy as np
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+from vit_pytorch import ViT
+import torch
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
+
+# Define paths
+healthy_folder = '/content/drive/MyDrive/PaperData/NewCT20'
+schizophrenia_folder = '/content/drive/MyDrive/PaperData/NewPB20'
+
+# Load and preprocess images
+class CustomDataset(Dataset):
+    def __init__(self, file_paths, labels, transform=None):
+        self.file_paths = file_paths
+        self.labels = labels
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.file_paths)
+
+    def __getitem__(self, idx):
+        img = tf.keras.preprocessing.image.load_img(self.file_paths[idx], target_size=(224, 224))
+        img_array = tf.keras.preprocessing.image.img_to_array(img) / 255.0
+        if self.transform:
+            img_array = self.transform(img_array)
+        label = self.labels[idx]
+        return img_array, label
+
+transform = transforms.Compose([
+    transforms.ToTensor(),
+])
+
+file_paths_healthy = [os.path.join(healthy_folder, filename) for filename in os.listdir(healthy_folder) if filename.endswith(".png")]
+file_paths_schizophrenia = [os.path.join(schizophrenia_folder, filename) for filename in os.listdir(schizophrenia_folder) if filename.endswith(".png")]
+
+X_paths = file_paths_healthy + file_paths_schizophrenia
+y = [0] * len(file_paths_healthy) + [1] * len(file_paths_schizophrenia)
+
+X_train_paths, X_val_paths, y_train, y_val = train_test_split(X_paths, y, test_size=0.3, random_state=42)
+
+train_dataset = CustomDataset(X_train_paths, y_train, transform=transform)
+val_dataset = CustomDataset(X_val_paths, y_val, transform=transform)
+
+train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
+
+# Define ViT model
+v = ViT(
+    image_size = 224,
+    patch_size = 16,
+    num_classes = 2,  # Adjust according to the number of classes (e.g., 2 for binary classification)
+    dim = 1024,
+    depth = 6,
+    heads = 16,
+    mlp_dim = 2048,
+    dropout = 0.1,
+    emb_dropout = 0.1
+)
+
+# Define training parameters
+criterion = torch.nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(v.parameters(), lr=0.0001)
+
+# Training loop
+num_epochs = 10
+for epoch in range(num_epochs):
+    v.train()
+    for images, labels in train_loader:
+        optimizer.zero_grad()
+        outputs = v(images)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item()}")
+
+# Evaluation
+v.eval()
+correct = 0
+total = 0
+with torch.no_grad():
+    for images, labels in val_loader:
+        outputs = v(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+print('Accuracy on validation set: %d %%' % (100 * correct / total))
