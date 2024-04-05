@@ -19,8 +19,8 @@ def DataPreProcess(raw):
       raw.pick_channels(channels)
 
       # 5. Filtering
-      low_freq = 4  # Delta Waves Theta Waves）
-      high_freq = 12  #（Alpha Waves、Beta Waves Gamma Waves）
+      low_freq = 4  # Theta Waves
+      high_freq = 12  # Alpha Waves
       raw.filter(low_freq, high_freq)
 
       # 6. Re-reference to average reference
