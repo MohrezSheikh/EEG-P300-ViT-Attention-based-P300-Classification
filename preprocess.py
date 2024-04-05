@@ -122,10 +122,9 @@ def DrawAndSaveImages(wavelet_time_freq_plots,total_wavelet_plots,window_size,sa
           total_file_wavelet_plots+=1
           total_wavelet_plots+=total_file_wavelet_plots
 
-  # cnt_file = '/content/cnt_file'
 
-  New_CT_path = '/content/drive/MyDrive/PaperData/NewCT20'
-  New_PB_path = '/content/drive/MyDrive/PaperData/NewPB20'
+  New_CT_path = 'Your ct path'
+  New_PB_path = 'Your pb path'
 
   channels = ["Pz", "Fz", "Cz", "Pz", "C3", "T3", "C4", "T4", "Fp1", "Fp2", "F3", "F4", "F7", "F8",
   "P3", "P4", "T5", "T6", "O1", "O2"]
