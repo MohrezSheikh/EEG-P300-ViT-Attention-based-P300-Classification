@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Define paths
-healthy_folder = '/content/drive/MyDrive/PaperData/Sabeti P300/NewCT20'
-schizophrenia_folder = '/content/drive/MyDrive/PaperData/Sabeti P300/NewPB20'
+healthy_folder = ''
+schizophrenia_folder = ''
 
 # Load and preprocess images
 class CustomDataset(Dataset):
