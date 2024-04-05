@@ -126,7 +126,7 @@ def DrawAndSaveImages(wavelet_time_freq_plots,total_wavelet_plots,window_size,sa
   New_CT_path = 'Your ct path'
   New_PB_path = 'Your pb path'
 
-  channels = ["Pz", "Fz", "Cz", "Pz", "C3", "T3", "C4", "T4", "Fp1", "Fp2", "F3", "F4", "F7", "F8",
+  channels = ["Fpz", "Fz", "Cz", "Pz", "C3", "T3", "C4", "T4", "Fp1", "Fp2", "F3", "F4", "F7", "F8",
   "P3", "P4", "T5", "T6", "O1", "O2"]
 
 
