@@ -138,35 +138,14 @@ def DrawAndSaveImages(wavelet_time_freq_plots,total_wavelet_plots,window_size,sa
   # No data overlap between adjacent time windows
   overlap_size = 0
 
-  # Reduce the sample rate to 250 Hz
-  # resample_rate = 200
-
   # Store feature values and labels for all images
   X_features = []
   y_labels = []
 
   total_wavelet_plots = 0
+
+
   import mne
-
-  # for cnt_file in os.listdir('/content/'):
-  #     full_file_path = os.path.join('/content/', cnt_file)
-  #     if cnt_file.endswith('.cnt'):
-  #         raw = mne.io.read_raw_cnt(full_file_path, preload=True)
-  #         # Process the raw data here
-  #         sampling_rate = raw.info['sfreq']
-  #         DataPreProcess(raw)
-  #         wavelet_time_freq_plots = DivideData(raw, window_size, sampling_rate)
-  #         DrawAndSaveImages(wavelet_time_freq_plots, total_wavelet_plots, window_size, sampling_rate)
-  #         except Exception as e:
-  #             error_message = str(e)
-  #             if "tuple index out of range" in error_message:
-  #                 print(f"Error processing {cnt_file}: {error_message}")
-  #                 continue  # Skip to the next file
-  #             else:
-  #                 raise  # Re-raise the exception if it's not the expected one
-
-
-  # print(f"Total Wavelet Time-Frequency Plot count：{total_wavelet_plots}")
 
   for cnt_file in os.listdir('/content/'):
     full_file_path = os.path.join('/content/', cnt_file)
